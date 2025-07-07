@@ -1,11 +1,17 @@
-import { Quattrocento } from "next/font/google";
+import MovieItem from "@/components/movie-Item";
+import movies from "@/mock/movies.json";
+import style from "./page.module.css";
 
 export default async function Page({
   searchParams,
 }: {
-  searchParams: Promise<{ q: string }>;
+  searchParams: { q?: string };
 }) {
-  const { q } = await searchParams;
-
-  return <div>Search 페이지 :{q}</div>;
+  return (
+    <div className={style.container}>
+      {movies.map((movie) => (
+        <MovieItem key={movie.id} {...movie} />
+      ))}
+    </div>
+  );
 }
