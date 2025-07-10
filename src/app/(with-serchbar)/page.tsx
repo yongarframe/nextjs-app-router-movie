@@ -5,7 +5,7 @@ import { MovieData } from "@/type";
 
 async function AllMovies() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie`, {
-    next: { revalidate: 30 },
+    cache: "force-cache",
   });
   if (!res.ok) {
     return <div>오루가 발생했습니다 ...</div>;
