@@ -1,0 +1,22 @@
+.container {
+  width: 100%;
+}
+
+.skeletonImage {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  background: linear-gradient(90deg, #282828 0%, #383838 50%, #282828 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}

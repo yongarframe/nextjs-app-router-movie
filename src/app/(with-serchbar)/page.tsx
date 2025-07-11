@@ -1,14 +1,18 @@
+import SkeletonMovieItem from "@/components/skeletomMovie-item";
 import style from "./page.module.css";
-import movies from "@/mock/movies.json";
 import MovieItem from "@/components/movie-Item";
 import { MovieData } from "@/type";
+import { delay } from "@/util/delat";
+import { Suspense } from "react";
 
 async function AllMovies() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie`, {
-    cache: "force-cache",
-  });
+  await delay(2000);
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie`,
+    {}
+  );
   if (!res.ok) {
-    return <div>오루가 발생했습니다 ...</div>;
+    return <div>오류가 발생했습니다 ...</div>;
   }
   const allMovies: MovieData[] = await res.json();
 
@@ -22,12 +26,13 @@ async function AllMovies() {
 }
 
 async function RecoMovies() {
+  await delay(2000);
+
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie/random`,
-    { next: { revalidate: 30 } }
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie/random`
   );
   if (!res.ok) {
-    return <div>오루가 발생했습니다 ...</div>;
+    return <div>오류가 발생했습니다 ...</div>;
   }
   const recoMovies: MovieData[] = await res.json();
 
@@ -40,16 +45,40 @@ async function RecoMovies() {
   );
 }
 
-export default async function Home() {
+export const dynamic = "force-dynamic";
+
+export default function Home() {
   return (
     <div className={style.container}>
       <section>
         <h3>지금 추천하는 영화</h3>
-        <RecoMovies />
+        <Suspense
+          fallback={
+            <div className={style.suggestion}>
+              <SkeletonMovieItem />
+              <SkeletonMovieItem />
+              <SkeletonMovieItem />
+            </div>
+          }
+        >
+          <RecoMovies />
+        </Suspense>
       </section>
       <section>
         <h3>등록된 모든 영화</h3>
-        <AllMovies />
+        <Suspense
+          fallback={
+            <div className={style.allMovie}>
+              <SkeletonMovieItem />
+              <SkeletonMovieItem />
+              <SkeletonMovieItem />
+              <SkeletonMovieItem />
+              <SkeletonMovieItem />
+            </div>
+          }
+        >
+          <AllMovies />
+        </Suspense>
       </section>
     </div>
   );

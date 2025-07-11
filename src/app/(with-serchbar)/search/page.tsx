@@ -1,14 +1,16 @@
 import MovieItem from "@/components/movie-Item";
-import movies from "@/mock/movies.json";
 import style from "./page.module.css";
-import { SearchParamsContext } from "next/dist/shared/lib/hooks-client-context.shared-runtime";
 import { MovieData } from "@/type";
+import { delay } from "@/util/delat";
+import { Suspense } from "react";
+import SkeletonMovieItem from "@/components/skeletomMovie-item";
 
-export default async function Page({
+async function SearchResult({
   searchParams,
 }: {
   searchParams: Promise<{ q?: string }>;
 }) {
+  await delay(1500);
   const { q } = await searchParams;
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie/search?q=${q}`,
@@ -27,5 +29,27 @@ export default async function Page({
         <MovieItem key={movie.id} {...movie} />
       ))}
     </div>
+  );
+}
+
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
+  const { q } = await searchParams;
+  return (
+    <Suspense
+      key={q}
+      fallback={
+        <div className={style.container}>
+          <SkeletonMovieItem />
+          <SkeletonMovieItem />
+          <SkeletonMovieItem />
+        </div>
+      }
+    >
+      <SearchResult searchParams={Promise.resolve(searchParams)} />
+    </Suspense>
   );
 }
