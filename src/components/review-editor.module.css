@@ -21,6 +21,7 @@
   border: 1px solid rgb(220, 220, 220);
   border-radius: 5px;
   background-color: black;
+  color: white;
 }
 
 .form_container button {

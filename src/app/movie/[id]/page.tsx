@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import style from "./page.module.css";
-import { createReviewAction } from "@/actions/create-review.action";
 import { ReviewData } from "@/type";
 import ReviewItems from "@/components/review-items";
 import ReviewEditor from "@/components/review-editor";
@@ -57,16 +56,18 @@ async function MovieDetail({ params }: { params: Promise<{ id: string }> }) {
 }
 
 async function RevewList({ params }: { params: Promise<{ id: string }> }) {
+  const { id: movieId } = await params;
+
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/review/movie/${
-      (
-        await params
-      ).id
-    }`
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/review/movie/${movieId}`,
+    { next: { tags: [`review-${movieId}`] } }
   );
 
   if (!response.ok) {
-    throw new Error(`Reviw fetch failed : ${response.statusText}`);
+    return {
+      status: "error",
+      error: `에러: ${response.statusText}`,
+    };
   }
 
   const reviews: ReviewData[] = await response.json();
