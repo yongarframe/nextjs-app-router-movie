@@ -3,6 +3,7 @@ import style from "./page.module.css";
 import { ReviewData } from "@/type";
 import ReviewItems from "@/components/review-items";
 import ReviewEditor from "@/components/review-editor";
+import Image from "next/image";
 
 export function generateStaticParams() {
   return [{ id: "1" }, { id: "2" }, { id: "3" }];
@@ -40,7 +41,12 @@ async function MovieDetail({ params }: { params: Promise<{ id: string }> }) {
         className={style.cover_img_container}
         style={{ backgroundImage: `url('${posterImgUrl}')` }}
       >
-        <img src={posterImgUrl} />
+        <Image
+          src={posterImgUrl}
+          width={240}
+          height={300}
+          alt={`영화 ${title}의 포스트 이미지`}
+        />
       </div>
       <div className={style.content}>
         <h1 className={style.title}>{title}</h1>
