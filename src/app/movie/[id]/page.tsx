@@ -64,10 +64,7 @@ async function RevewList({ params }: { params: Promise<{ id: string }> }) {
   );
 
   if (!response.ok) {
-    return {
-      status: "error",
-      error: `에러: ${response.statusText}`,
-    };
+    throw new Error(`Reviw fetch failed : ${response.statusText}`);
   }
 
   const reviews: ReviewData[] = await response.json();

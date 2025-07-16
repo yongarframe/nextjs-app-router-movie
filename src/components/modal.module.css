@@ -1,0 +1,22 @@
+.modal {
+  position: fixed;
+  top: 50px;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%); /* 가로 중앙 */
+  width: 1000px;
+
+  background-color: black;
+  color: white;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: auto;
+}
+
+.modal::-webkit-scrollbar {
+  display: none;
+}
+
+.modal::backdrop {
+  background: rgba(0, 0, 0, 0.7);
+}

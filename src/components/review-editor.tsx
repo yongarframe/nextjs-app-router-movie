@@ -16,7 +16,7 @@ export default function ReviewEditor({
   );
 
   useEffect(() => {
-    if (state && state.status) {
+    if (state && !state.status) {
       alert(state.error);
     }
   }, [state]);
